@@ -6,5 +6,5 @@
 - [x] Audio normalization
 - [x] Remove background noises
 - [x] Add Instagram question overlay
-- [ ] Position video by face
+- [x] Position video by face
 - [ ] Cut video when not talking

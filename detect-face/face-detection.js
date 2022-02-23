@@ -57,10 +57,10 @@ async function searchFaceOnFile(file) {
 }
 
 async function main() {
-  const data = await fs.readFile(path.resolve(__dirname, '../frame.png'));
+  const data = await fs.readFile(path.resolve(__dirname, '../tmp/frame.png'));
   const results = await searchFaceOnFile(data);
 
-  await fs.writeFile('./result.json', JSON.stringify(results, null, 2), {
+  await fs.writeFile(path.resolve(__dirname, '../tmp/face.json'), JSON.stringify(results, null, 2), {
     encoding: 'utf8',
   });
 }

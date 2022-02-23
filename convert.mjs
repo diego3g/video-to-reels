@@ -1,8 +1,11 @@
 #!/usr/bin/env zx
 
 import { fold } from './utils/fold-text.mjs'
+import { calculateCuts } from './utils/calculate-cuts.mjs'
 
 const q = await question('Qual a pergunta? \n')
+
+const videoFile = 'origins/03.mp4';
 
 const textArray = fold(q, 30, true);
 const lineBreakedText = textArray
@@ -33,24 +36,32 @@ await $`
 
 await $`
   ffmpeg -y \
-    -i origins/02.mp4 \
+    -i ${videoFile} \
     -vf "transpose=1" \
     -frames:v 1 \
     tmp/frame.png`
 
+await $`node detect-face/face-detection.js`
+
+const faceResult = await fs.readJsonSync('./tmp/face.json');
+const cut = calculateCuts(faceResult);
+
 await $`
   ffmpeg -y \
-    -i origins/02.mp4 \
+    -i ${videoFile} \
     -i tmp/question.png \
     -c:v h264_videotoolbox \
     -b:v 5000k \
     -filter_complex "
       transpose=1, \
       scale=w=1080:h=1920, \
-      crop=w=1080:h=1350:exact=1, \
+      crop=1080:1350:0:${cut.top}, \
       overlay=(main_w/2)-375:main_h-overlay_h-40, \
       lut3d=assets/filters/02.CUBE
     " \
-    -af "arnndn=m=assets/bd.rnnn:mix=0.9, loudnorm=I=-16:LRA=11:TP=-1.5" \
+    -af "
+      arnndn=m=assets/bd.rnnn:mix=0.9, \ 
+      loudnorm=I=-16:LRA=11:TP=-1.5 \
+    " \
     output.mp4`
 
