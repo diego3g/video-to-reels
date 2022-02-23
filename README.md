@@ -8,3 +8,4 @@
 - [x] Add Instagram question overlay
 - [x] Position video by face
 - [ ] Cut video when not talking
+- [ ] Subtitles
