@@ -1,0 +1,4 @@
+output.mp4
+tmp/*
+!tmp/.gitkeep
+origins/*.mp4
