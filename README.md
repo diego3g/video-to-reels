@@ -19,7 +19,7 @@ To run this script you need to install locally on your machine the following dep
 2. Save a horizontal video inside the `origins` folder;
 3. Change the value of `videoFile` variable inside `convert.mjs`;
 4. Run `zx convert.mjs` in the root folder to start conversion;
-5. Done! The output file will be stored as `output.mp4` on root folder;
+5. Done! The output file will be stored at `/videos` folder;
 
 ## Features
 
