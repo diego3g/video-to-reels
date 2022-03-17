@@ -5,7 +5,23 @@ import { calculateCuts } from './utils/calculate-cuts.mjs'
 
 const q = await question('Qual a pergunta? \n')
 
-const videoFile = 'origins/03.mp4';
+export async function QFilter() {
+  const listFilters = await $`ls ./assets/filters/`
+  const filter = await question('\nEscolha um dos filtros acima e digite o nome abaixo (sem a extensão .CUBE): \n')
+
+  return {
+    filter,
+    listFilters
+  }
+}
+
+const { filter } = await QFilter();
+
+const video = await question('\nDigite o nome do arquivo a ser salvo: \n')
+
+const videoFile = 'origins/mayk.mp4';
+const videoOutput = 'videos/';
+
 
 const textArray = fold(q, 30, true);
 const lineBreakedText = textArray
@@ -20,9 +36,10 @@ const fontSizes = {
   3: '48',
   4: '42',
   5: '36'
-} 
+}
 
 const fontSizeByAmountOfLines = fontSizes[Math.min(textArray.length, 5)]
+
 
 await $`
   convert \
@@ -46,6 +63,7 @@ await $`node detect-face/face-detection.js`
 const faceResult = await fs.readJsonSync('./tmp/face.json');
 const cut = calculateCuts(faceResult);
 
+
 await $`
   ffmpeg -y \
     -i ${videoFile} \
@@ -57,11 +75,13 @@ await $`
       scale=w=1080:h=1920, \
       crop=1080:1350:0:${cut.top}, \
       overlay=(main_w/2)-375:main_h-overlay_h-40, \
-      lut3d=assets/filters/02.CUBE
+  
+      lut3d=assets/filters/${filter}.CUBE
     " \
     -af "
       arnndn=m=assets/bd.rnnn:mix=0.9, \ 
       loudnorm=I=-16:LRA=11:TP=-1.5 \
     " \
-    output.mp4`
+    "${videoOutput + video}.mp4"`
+
 

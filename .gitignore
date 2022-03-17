@@ -1,4 +1,8 @@
-output.mp4
+*.mp4
 tmp/*
 !tmp/.gitkeep
-origins/*.mp4
+/origins/*
+!origins/.gitkeep
+/videos/*
+!videos/.gitkeep
+*.DS_Store
